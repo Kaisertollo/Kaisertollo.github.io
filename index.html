@@ -123,12 +123,12 @@
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-analytics.js";
   import { getDatabase, ref, push,child, get ,set} from "https://www.gstatic.com/firebasejs/9.21.0/firebase-database.js"
   class Paiement {    
-    constructor(date, montant, heure,tests) {
+    constructor(date, montant, heure,tests,check) {
       this.date = date;
       this.montant = montant;
       this.heure = heure;
       this.tests = tests;
-      this.check = false
+      this.check = check
     }
   }
   class Test {    
@@ -169,7 +169,7 @@
           console.log(key);
           let p = list[key]
           console.log(p);
-          paiements.push(new Paiement(p["date"], p["montant"], p["heure"]))
+          paiements.push(new Paiement(p["date"], p["montant"], p["heure"],p["tests"],p["check"]))
           updateTable()
   }
 }
@@ -191,7 +191,7 @@
     const montant = document.querySelector('#montant').value;
     
     // Create a new Paiement object
-    const paiement = new Paiement(date, montant, heure,test);
+    const paiement = new Paiement(date, montant, heure,test,false);
       
     // Add the paiement to the array
     paiements.push(paiement);
@@ -225,7 +225,7 @@
       const heureTd = document.createElement('td');
       heureTd.textContent = paiement.heure;
       tr.appendChild(heureTd);
-      if (paiement.check) {
+      if (paiement.check == true) {
         const td = document.createElement('td');
         td.innerHTML = "<i class='fa fa-check-circle-o fa-2x' style='color:green;''></i>";
         tr.appendChild(td);
