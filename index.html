@@ -6,22 +6,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css' rel='stylesheet'>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.slim.min.js" integrity="sha256-a2yjHM4jnF9f54xUQakjZGaqYs/V1CYvWpoqZzC2/Bw=" crossorigin="anonymous"></script>
+
     
     <title>Document</title>
 </head>
 <body>
   <div class="container">
+    
     <h1>Liste des paiements</h1>
-    <form>
+    <form id="form_paiement">
       <div class="mb-3">
         <label for="date" class="form-label">Date</label>
         <input type="date" class="form-control" id="date">
       </div>
       <div class="mb-3">
         <label for="montant" class="form-label">Montant</label>
-        <input type="number" class="form-control" id="montant">
+        <input type="number" class="form-control" id="montant" disabled>
+      </div>
+      <div class="mb-3">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+          Saisir test
+        </button>
       </div>
       <div class="mb-3">
         <label for="heure" class="form-label">Heure</label>
@@ -40,20 +48,96 @@
       <tbody>
       </tbody>
     </table>
-    
+    <!-- Modal -->
+<div class="modal fade modal-fullscreen" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Saisi Test</h5>
+        <button type="button" class="btn-close close_modal" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h1>Liste des Test</h1>
+    <form id="form_test">
+      <div class="row">
+        <div class="col">
+          <label for="select_test" class="form-label">Test</label>
+        <select id="select_test"class="form-select" aria-label="Tests Médicaux en Laboratoire">
+          <option value="glycémie">Glycémie</option>
+          <option value="numération-formule-sanguine">Numération Formule Sanguine</option>
+          <option value="analyse-d'urine">Analyse d'urine</option>
+          <option value="test-de-parasite-de-malaria">Test de Parasite de Malaria</option>
+          <option value="groupe-sanguin">Groupe Sanguin</option>
+          <option value="fonction-hépatique">Test de Fonction Hépatique</option>
+          <option value="fonction-rénale">Test de Fonction Rénale</option>
+          <option value="test-de-grossesse">Test de Grossesse</option>
+          <option value="test-de-dépistage-du-vih">Test de Dépistage du VIH</option>
+          <option value="test-de-l'hépatite-b">Test de l'Hépatite B</option>
+          <option value="test-de-la-syphilis">Test de la Syphilis</option>
+        </select>
+        </div>
+        <div class="col">
+          <label for="select_caisse" class="form-label">Caisse</label>
+        <select id="select_caisse" class="form-select" aria-label="Sélectionnez une caisse">
+          <option value="1">Caisse 1</option>
+          <option value="2">Caisse 2</option>
+          <option value="3">Caisse 3</option>
+          <option value="4">Caisse 4</option>
+          <option value="5">Caisse 5</option>
+        </select>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="montant" class="form-label">Montant($)</label>
+        <input type="number" class="form-control" id="montantTest">
+      </div>
+      
+      
+      <button type="submit" class="btn btn-primary" id="ajouter">Ajouter</button>
+    </form>
+        <table id="testTable" class="table table-striped">
+          <thead>
+            <tr>
+              <th>Test</th>
+              <th>Montant</th>
+              <th>Caisse</th>
+              <th>Payé</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="close" class="btn btn-danger close_modal2" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" id="save"class="btn btn-success" data-bs-dismiss="modal">Sauvegarder</button>
+      </div>
+    </div>
   </div>
+</div>
+  </div>
+  
   <script type="module">
-    class Paiement {
-    constructor(date, montant, heure) {
-      this.date = date;
-      this.montant = montant;
-      this.heure = heure;
-    }
-  }
-    // Import the functions you need from the SDKs you need
+  // Import the functions you need from the SDKs you need
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-analytics.js";
   import { getDatabase, ref, push,child, get ,set} from "https://www.gstatic.com/firebasejs/9.21.0/firebase-database.js"
+  class Paiement {    
+    constructor(date, montant, heure,tests) {
+      this.date = date;
+      this.montant = montant;
+      this.heure = heure;
+      this.tests = tests;
+      this.check = false
+    }
+  }
+  class Test {    
+    constructor(label, montantTest, caisse) {
+      this.label= label;
+      this.montantTest = montantTest;
+      this.caisse = caisse;
+    }
+  }
   // TODO: Add SDKs for Firebase products that you want to use
   // https://firebase.google.com/docs/web/setup#available-libraries
   // Your web app's Firebase configuration
@@ -74,18 +158,19 @@
   const database = getDatabase(app);
   const dbRef = ref(getDatabase());
   const paiements = [];
+  let tests = [];
+  //load data from firebase
   get(child(dbRef, `posts/`)).then((snapshot) => {
-  if (snapshot.exists()) {
-    console.log(snapshot.val());
-    let list = snapshot.val()
-    for (const key in list) {
-  if (list.hasOwnProperty(key)) {
-    console.log(key);
-    let p = list[key]
-    console.log(p);
-    paiements.push(new Paiement(p["date"], p["montant"], p["heure"]))
-    updateTable()
-
+    if (snapshot.exists()) {
+      console.log(snapshot.val());
+      let list = snapshot.val()
+      for (const key in list) {
+        if (list.hasOwnProperty(key)) {
+          console.log(key);
+          let p = list[key]
+          console.log(p);
+          paiements.push(new Paiement(p["date"], p["montant"], p["heure"]))
+          updateTable()
   }
 }
   } else {
@@ -96,62 +181,141 @@
 });
 
 
-  
-  
-  
-  const form = document.querySelector('form');
+  const form = document.querySelector('#form_paiement');
   const paiementsTable = document.querySelector('#paiementsTable tbody');
-  
   form.addEventListener('submit', (e) => {
     e.preventDefault();
-  
     const date = document.querySelector('#date').value;
-    const montant = document.querySelector('#montant').value;
     const heure = document.querySelector('#heure').value;
-
-    // Create a new Paiement object
-    const paiement = new Paiement(date, montant, heure);
+    const test = tests
+    const montant = document.querySelector('#montant').value;
     
+    // Create a new Paiement object
+    const paiement = new Paiement(date, montant, heure,test);
+      
     // Add the paiement to the array
     paiements.push(paiement);
-  // Create a new post reference with an auto-generated id
-  const db = getDatabase();
-  const paiementRef = ref(db, 'posts');
-  const newPaiementRef = push(paiementRef);
-  set(newPaiementRef, paiement);
+    // Create a new post reference with an auto-generated id
+    /* const db = getDatabase();
+    const paiementRef = ref(db, 'posts');
+    const newPaiementRef = push(paiementRef);
+    set(newPaiementRef, paiement); */
     // Clear the form
     form.reset();
-    
+    tests = []
     // Update the table
     updateTable();
-    });
-    
-    function updateTable() {
+  });
+  function updateTable() {
+      // Clear the table body
+      paiementsTable.innerHTML = '';
+      console.log(paiements)
+      // Loop through the paiements array and add each one to the table
+      paiements.forEach((paiement) => {
+      const tr = document.createElement('tr');
+      
+      const dateTd = document.createElement('td');
+      dateTd.textContent = paiement.date;
+      tr.appendChild(dateTd);
+      
+      const montantTd = document.createElement('td');
+      montantTd.textContent = paiement.montant;
+      tr.appendChild(montantTd);
+      
+      const heureTd = document.createElement('td');
+      heureTd.textContent = paiement.heure;
+      tr.appendChild(heureTd);
+      if (paiement.check) {
+        const td = document.createElement('td');
+        td.innerHTML = "<i class='fa fa-check-circle-o fa-2x' style='color:green;''></i>";
+        tr.appendChild(td);
+      }
+      else{
+        const td = document.createElement('td');
+        td.innerHTML = "<i class='fa fa-times-circle-o fa-2x' style='color:red;''></i>";
+        tr.appendChild(td);
+      }
+      /* if(paiement.montant != 0){
+        const listeTest = document.createElement('td');
+      listeTest.innerHTML = "<button type='button' class='btn btn-danger' data-bs-toggle='modal' data-bs-target='#exampleModal'>Tests</button>"
+      listeTest.addEventListener("click",(params)=>{
+        updateTable2(paiement.tests)
+      })
+      tr.appendChild(listeTest);
+      } */
+      
+      paiementsTable.appendChild(tr);
+      });
+      }
+      
+
+  const testTable = document.querySelector('#testTable tbody');
+  const form_test = document.querySelector('#form_test');
+  const modal = document.querySelector('#exampleModal')  
+  
+  form_test.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const test = document.querySelector('#select_test').value;
+    const montant = document.querySelector('#montantTest').value;
+    const caisse = document.querySelector('#select_caisse').value;
+
+    // Create a new Paiement object
+    const t = new Test(test, montant, caisse);
+      
+    // Add the paiement to the array
+    tests.push(t);
+    // Create a new post reference with an auto-generated id
+    /* const db = getDatabase();
+    const paiementRef = ref(db, 'posts');
+    const newPaiementRef = push(paiementRef);
+    set(newPaiementRef, paiement); */
+    // Clear the form
+    form_test.reset();
+    // Update the table
+    updateTable2(tests);
+  });
+  function updateTable2(tab) {
     // Clear the table body
-    paiementsTable.innerHTML = '';
-    console.log(paiements)
+    testTable.innerHTML = '';
     // Loop through the paiements array and add each one to the table
-    paiements.forEach((paiement) => {
+    tab.forEach((t) => {
     const tr = document.createElement('tr');
     
-    const dateTd = document.createElement('td');
-    dateTd.textContent = paiement.date;
-    tr.appendChild(dateTd);
-    
+    const testTd = document.createElement('td');
+    testTd.textContent = t.label;
+    tr.appendChild(testTd);
     const montantTd = document.createElement('td');
-    montantTd.textContent = paiement.montant;
+    montantTd.textContent = t.montantTest;
     tr.appendChild(montantTd);
     
-    const heureTd = document.createElement('td');
-    heureTd.textContent = paiement.heure;
-    tr.appendChild(heureTd);
+    const caisseTd = document.createElement('td');
+    caisseTd.textContent = t.caisse;
+    tr.appendChild(caisseTd);
     
-    paiementsTable.appendChild(tr);
+    testTable.appendChild(tr);
     });
-    }
-    
-    // Call the updateTable function to initialize the table
-    updateTable();      
-  </script>
+  }
+  document.querySelector('.close_modal').addEventListener('click',function name(params) {
+    form_test.reset()
+    tests = []
+  })
+  document.querySelector('.close_modal2').addEventListener('click',function name(params) {
+    form_test.reset()
+    tests = []
+  })
+  document.querySelector('#save').addEventListener('click',function name(params) {
+    form_test.reset()
+    const montant = document.querySelector('#montant');
+    const value = tests.reduce((sum,it)=>{
+      return sum + Number(it.montantTest);
+    },0)
+    montant.value = value
+  })
+  // Call the updateTable function to initialize the table
+  updateTable();
+  // Call the updateTable function to initialize the table      
+  updateTable2(tests)
+</script> 
+
 </body>
 </html>
